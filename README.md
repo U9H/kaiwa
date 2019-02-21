@@ -1,4 +1,43 @@
-# Quick Start
+# Kaiwa
+
+## Data Structure
+App {
+    Users []
+    Sites [
+        Domains[]
+        Pages [
+            Locations<String>
+            Comments [
+            ]
+        ]
+    ]
+}
+
+App {
+    Config
+}
+
+User {
+
+}
+
+Sites {
+    user_id : int # who owns it
+    name : string # friendly name
+    # HAS MANY Pages
+    # HAS MANY Hosts
+}
+
+Host {
+    site_id : int
+    name : string
+}
+
+Page {
+    # HAS MANY COMMENTS
+}
+
+## Quick Start
 
 Install [Docker](https://docs.docker.com/engine/installation/) & [Docker-Compose](https://docs.docker.com/compose/install/)
 

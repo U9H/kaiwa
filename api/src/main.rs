@@ -15,25 +15,24 @@ mod schema;
 use rocket::request::Request;
 use rocket_contrib::databases::diesel::PgConnection;
 
-#[get("/")]
-fn index(_db_conn: RustyDbConn) -> &'static str {
-    // Rocket uses the RustyDbConn request guard to provide us with a database
-    // connection from a managed pool.
-    "Hello, from Rust! (with a database connection!)"
-}
+mod controllers;
+mod models;
+
+use crate::models as m;
+use crate::controllers as c;
 
 #[catch(503)]
 fn service_not_available(_req: &Request) -> &'static str {
     "Service is not available. (Is the database up?)"
 }
 
-#[database("rustydb")]
-pub struct RustyDbConn(PgConnection);
+#[database("kaiwa-db")]
+pub struct Conn(PgConnection);
 
 fn main() {
     rocket::ignite()
-        .attach(RustyDbConn::fairing())
+        .attach(Conn::fairing())
         .register(catchers![service_not_available])
-        .mount("/api", routes![index])
+        .mount("/api/v1", routes![c::sites::create])
         .launch();
 }

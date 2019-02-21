@@ -9,14 +9,14 @@ services:
       - "3000:3000"
     command: bash -c "yarn && yarn start"
     links:
-      - api_server
+      - api
 
-  api_server:
-    build: ./api_server
+  api:
+    build: ./api
     ports: 
       - "3001:3001"
     volumes:
-      - ./api_server:/usr/src/app
+      - ./api:/usr/src/app
     links:
       - db
     # diesel infer_schema macro gives warnings with this flag.
