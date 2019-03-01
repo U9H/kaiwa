@@ -1,10 +1,16 @@
+use crate::models::site::{NewSite, Site};
+use crate::schema::sites::dsl::*;
 use crate::Conn;
+use diesel::prelude::*;
+use rocket_contrib::json::Json;
 
-#[post("/sites")]
-pub fn create(_conn: Conn) -> String {
-    // Rocket uses the Conn request guard to provide us with a database
-    // connection from a managed pool.
-    String::from("Hello, from Rust! (with a database connection!)")
+#[post("/sites", format = "application/json", data = "<site>")]
+pub fn create(c: Conn, site: Json<NewSite>) -> Result<Json<Site>, diesel::result::Error> {
+    Ok(Json(
+        diesel::insert_into(sites)
+            .values(&site.into_inner())
+            .get_result(&*c)?,
+    ))
 }
 
 // #[get("/sites/<name>/<age>/<cool>")]
