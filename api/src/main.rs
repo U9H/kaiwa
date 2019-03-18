@@ -37,7 +37,7 @@ fn main() {
     rocket::ignite()
         .attach(Conn::fairing())
         .register(catchers![service_not_available])
-        .mount("/api/v1", routes![c::sites::create, c::users::create])
+        .mount("/api/v1", routes![c::sites::create, c::users::create, c::pages::create, c::threads::create])
         .mount("/", routes![index])
         .launch();
 }
